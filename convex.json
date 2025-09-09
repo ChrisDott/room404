@@ -1,0 +1,18 @@
+{
+  "project": "room404",
+  "team": "",
+  "authInfo": {
+    "deploymentType": "prod"
+  },
+  "functions": {
+    "cwd": "convex",
+    "entryPoints": [
+      "./documents.ts",
+      "./projects.ts",
+      "./users.ts",
+      "./members.ts"
+    ]
+  }
+}
+
+

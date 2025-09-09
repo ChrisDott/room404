@@ -1,3 +1,13 @@
+# Convex build artifacts
+.convex/
+convex/_generated/
+
+# Node
+node_modules/
+
+# Env
+.env*
+
 # Ignore AI prompts and planning files
 ai-prompts/
 
