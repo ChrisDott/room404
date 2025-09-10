@@ -68,7 +68,7 @@
 
 /* Custom styles for Room404 */
 .prose-editor {
-  @apply prose prose-slate dark:prose-invert max-w-none;
+  @apply max-w-none;
 }
 
 .prose-editor h1 {
@@ -96,15 +96,15 @@
 }
 
 .prose-editor blockquote {
-  @apply border-l-4 border-primary pl-4 italic my-4;
+  @apply border-l-4 border-blue-600 pl-4 italic my-4;
 }
 
 .prose-editor code {
-  @apply bg-muted px-1 py-0.5 rounded text-sm font-mono;
+  @apply bg-gray-100 px-1 py-0.5 rounded text-sm font-mono;
 }
 
 .prose-editor pre {
-  @apply bg-muted p-4 rounded-lg overflow-x-auto my-4;
+  @apply bg-gray-900 text-white p-4 rounded-lg overflow-x-auto my-4;
 }
 
 .prose-editor pre code {
