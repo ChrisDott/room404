@@ -17,7 +17,7 @@ export const createOrUpdate = mutation({
     const now = Date.now();
     const existing = await ctx.db
       .query("users")
-      .withIndex("by_email", (q) => q.eq("email", args.email))
+      .withIndex("email", (q) => q.eq("email", args.email))
       .first();
 
     if (existing) {
@@ -62,7 +62,7 @@ export const getByEmail = query({
   handler: async (ctx, { email }) => {
     return await ctx.db
       .query("users")
-      .withIndex("by_email", (q) => q.eq("email", email))
+      .withIndex("email", (q) => q.eq("email", email))
       .first();
   },
 });

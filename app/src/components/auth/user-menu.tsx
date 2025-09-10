@@ -21,18 +21,18 @@ export function UserMenu() {
       <DropdownMenuTrigger asChild>
         <button className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 transition-colors">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={user.avatar} alt={user.name} />
+            <AvatarImage src={user.image || user.avatar} alt={user.name || "User"} />
             <AvatarFallback>
-              {user.name.charAt(0).toUpperCase()}
+              {(user.name || "U").charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <span className="text-sm font-medium">{user.name}</span>
+          <span className="text-sm font-medium">{user.name || "User"}</span>
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuItem className="flex flex-col items-start">
-          <div className="font-medium">{user.name}</div>
-          <div className="text-sm text-gray-500">{user.email}</div>
+          <div className="font-medium">{user.name || "User"}</div>
+          <div className="text-sm text-gray-500">{user.email || "No email"}</div>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>

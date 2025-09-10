@@ -9,19 +9,20 @@ export default defineSchema({
   users: defineTable({
     email: v.string(),
     name: v.string(),
-    avatar: v.optional(v.string()),
-    preferences: v.object({
+    image: v.optional(v.string()),
+    emailVerificationTime: v.optional(v.number()),
+    preferences: v.optional(v.object({
       theme: v.union(v.literal("light"), v.literal("dark")),
       editorSettings: v.object({
         fontSize: v.number(),
         wordWrap: v.boolean(),
         minimap: v.boolean(),
       }),
-    }),
-    createdAt: v.number(),
-    updatedAt: v.number(),
+    })),
+    createdAt: v.optional(v.number()),
+    updatedAt: v.optional(v.number()),
   })
-    .index("by_email", ["email"])
+    .index("email", ["email"])
     .index("by_createdAt", ["createdAt"]),
 
   projects: defineTable({
