@@ -82,5 +82,64 @@ export const update = mutation({
   },
 });
 
+export const remove = mutation({
+  args: { id: v.id("documents") },
+  handler: async (ctx, { id }) => {
+    const doc = await ctx.db.get(id);
+    if (!doc) return null;
+    await ctx.db.delete(id);
+    return { success: true, deletedId: id };
+  },
+});
+
+export const rename = mutation({
+  args: { 
+    id: v.id("documents"), 
+    name: v.string() 
+  },
+  handler: async (ctx, { id, name }) => {
+    const doc = await ctx.db.get(id);
+    if (!doc) return null;
+    await ctx.db.patch(id, { 
+      name, 
+      updatedAt: Date.now() 
+    });
+    return await ctx.db.get(id);
+  },
+});
+
+export const search = query({
+  args: { 
+    projectId: v.optional(v.id("projects")),
+    searchTerm: v.string() 
+  },
+  handler: async (ctx, { projectId, searchTerm }) => {
+    let query = ctx.db.query("documents");
+    
+    if (projectId) {
+      query = query.withIndex("by_project", (q) => q.eq("projectId", projectId));
+    }
+    
+    const docs = await query.collect();
+    
+    // Simple text search in name and content
+    return docs.filter(doc => 
+      doc.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      doc.content.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  },
+});
+
+export const listRecent = query({
+  args: { limit: v.optional(v.number()) },
+  handler: async (ctx, { limit = 10 }) => {
+    return await ctx.db
+      .query("documents")
+      .withIndex("by_updatedAt", (q) => q)
+      .order("desc")
+      .take(limit);
+  },
+});
+
 
 

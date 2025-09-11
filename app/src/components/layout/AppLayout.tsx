@@ -1,6 +1,6 @@
 "use client";
 import { Header } from "./Header";
-import { ProjectSidebar } from "./ProjectSidebar";
+import { FileTreeSidebar } from "./FileTreeSidebar";
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -9,7 +9,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex gap-6 py-6">
           <aside className="hidden md:block w-64 shrink-0">
-            <ProjectSidebar />
+            <FileTreeSidebar />
           </aside>
           <main className="flex-1 min-w-0">
             {children}

@@ -20,11 +20,15 @@ export default function DocumentPage() {
     if (!document) return;
     
     try {
+      // Calculate word count more accurately
+      const textContent = content.replace(/<[^>]*>/g, '').trim();
+      const wordCount = textContent ? textContent.split(/\s+/).length : 0;
+
       await updateDocument({
         id: document._id,
         content,
         metadata: {
-          wordCount: content.replace(/<[^>]*>/g, '').trim().split(/\s+/).length,
+          wordCount,
           lastEditor: document.authorId, // In a real app, this would be the current user
           version: document.metadata.version + 1,
         }
