@@ -1,15 +1,48 @@
 "use client";
-import { useParams } from "next/navigation";
-import { useQuery } from "convex/react";
+import { useParams, useRouter } from "next/navigation";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import Link from "next/link";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { useState } from "react";
 
 export default function ProjectPage() {
   const params = useParams();
+  const router = useRouter();
   const projectId = params?.projectId as string;
+  const [isCreating, setIsCreating] = useState(false);
+  
   const project = useQuery(api.projects.get, projectId ? { id: projectId as any } : "skip");
   const docs = useQuery(api.documents.listByProject, projectId ? { projectId: projectId as any } : "skip");
+  const createDocument = useMutation(api.documents.create);
+
+  const handleCreateDocument = async () => {
+    if (!project) return;
+    
+    setIsCreating(true);
+    try {
+      const docId = await createDocument({
+        projectId: project._id,
+        name: "Untitled Document",
+        content: "<h1>New Document</h1><p>Start writing here...</p>",
+        path: "/",
+        type: "markdown",
+        authorId: project.ownerId, // In a real app, this would be the current user
+        tags: [],
+        metadata: {
+          wordCount: 4,
+          lastEditor: project.ownerId,
+          version: 1,
+        }
+      });
+      
+      router.push(`/project/${projectId}/document/${docId}`);
+    } catch (error) {
+      console.error('Failed to create document:', error);
+    } finally {
+      setIsCreating(false);
+    }
+  };
 
   if (project === undefined) {
     return (
@@ -37,7 +70,13 @@ export default function ProjectPage() {
               <p className="text-gray-600 mt-1">{project.description}</p>
             )}
           </div>
-          <button className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">New Document</button>
+          <button 
+            onClick={handleCreateDocument}
+            disabled={isCreating}
+            className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isCreating ? "Creating..." : "New Document"}
+          </button>
         </div>
 
         <div className="bg-white border rounded-lg">
